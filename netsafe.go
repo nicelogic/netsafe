@@ -3,6 +3,7 @@ package netsafe
 import (
 	"bufio"
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -32,7 +33,13 @@ func (client *NetSafe) CheckSensitiveWords(ctx context.Context, text string) (bo
 }
 
 func buildWordsCall(ctx context.Context) (words []string, err error) {
-	lines, err := readLines("./sensitive_words.txt")
+	dir, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+	path := fmt.Sprintf("%s/sensitive_words.txt", dir)
+	log.Printf("cwd(%v).path(%v)\n", dir, path)
+	lines, err := readLines(path)
 	if err != nil {
 		return nil, err
 	}
