@@ -19,6 +19,7 @@ func init() {
 func main() {
 	st, _ := sw.New(
 		buildWordsCall,
+		"",
 		sw.WithMode(sw.ModePinyin, sw.ModeStats),
 		sw.WithMaskWord('*'),
 	)
@@ -73,9 +74,9 @@ func main() {
 	time.Sleep(time.Minute)
 }
 
-func buildWordsCall(ctx context.Context) (words []string, err error) {
+func buildWordsCall(ctx context.Context, path string) (words []string, err error) {
 
-	lines, err := ReadLines("../../sensitive_word_dict.txt")
+	lines, err := ReadLines("../../sensitive_word_dict.txt",)
 	if err != nil {
 		return nil, err
 	}

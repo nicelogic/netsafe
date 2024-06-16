@@ -24,7 +24,7 @@ type SensitiveWordChecker interface {
 
 var _ SensitiveWordChecker = (*sensitiveWord)(nil)
 
-func New(buildWords BuildWordsFn, opts ...Option) (SensitiveWordChecker, error) {
+func New(buildWords BuildWordsFn, path string, opts ...Option) (SensitiveWordChecker, error) {
 	o := options{
 		maskWord:       '*',
 		buildWordsCall: buildWords,
@@ -40,7 +40,7 @@ func New(buildWords BuildWordsFn, opts ...Option) (SensitiveWordChecker, error) 
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	_ = cancel
-	if err := st.buildWords(ctx); err != nil {
+	if err := st.buildWords(ctx, path); err != nil {
 		log.Printf("build words failed.err(%v)\n", err)
 		return nil, err
 	}
@@ -54,9 +54,9 @@ type sensitiveWord struct {
 	trieTree atomic.Value
 }
 
-func (st *sensitiveWord) buildWords(ctx context.Context) error {
+func (st *sensitiveWord) buildWords(ctx context.Context, path string) error {
 	log.Printf("rebuild words, start_time(%v)\n", time.Now().Format("2006-01-02 15:04:05"))
-	words, err := st.buildWordsCall(ctx)
+	words, err := st.buildWordsCall(ctx, path)
 	if err != nil {
 		return err
 	}

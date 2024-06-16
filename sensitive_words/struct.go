@@ -28,7 +28,7 @@ func (t Mode) Range(fn func(value Mode) error) error {
 	return nil
 }
 
-type BuildWordsFn func(ctx context.Context) ([]string, error)
+type BuildWordsFn func(ctx context.Context, path string) ([]string, error)
 
 // 中文 + |
 var pinyinWordReg = regexp.MustCompile("^\\p{Han}+([|\u00B7\u2022\u2027\u30FB\u002E\u0387\u16EB\u2219\u22C5\uFF65\u05BC]\\p{Han}+)*?$")

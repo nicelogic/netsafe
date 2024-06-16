@@ -11,6 +11,7 @@ import (
 func TestHit(t *testing.T) {
 	st, _ := New(
 		buildWordsCall,
+		"",
 		WithMode(ModePinyin, ModeStats),
 		WithMaskWord('*'),
 	)
@@ -34,6 +35,7 @@ func TestHit(t *testing.T) {
 func TestHitMust(t *testing.T) {
 	st, _ := New(
 		buildWordsCall,
+		"",
 		WithMode(ModePinyin, ModeStats),
 		WithMaskWord('*'),
 	)
@@ -69,6 +71,7 @@ func TestHitMust(t *testing.T) {
 func TestMatchReplace(t *testing.T) {
 	st, _ := New(
 		buildWordsCall,
+		"",
 		WithMode(ModePinyin, ModeStats),
 		WithMaskWord('*'),
 	)
@@ -107,6 +110,7 @@ func TestMatchReplace(t *testing.T) {
 func TestInfos(t *testing.T) {
 	st, _ := New(
 		buildWordsCall,
+		"",
 		WithMode(ModePinyin, ModeStats),
 		WithMaskWord('*'),
 	)
@@ -139,7 +143,7 @@ func TestInfos(t *testing.T) {
 	}
 }
 
-func buildWordsCall(ctx context.Context) (words []string, err error) {
+func buildWordsCall(ctx context.Context, path string) (words []string, err error) {
 	return []string{
 		"丑八怪",
 		"丑东西",

@@ -3,7 +3,6 @@ package netsafe
 import (
 	"bufio"
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -15,10 +14,11 @@ type NetSafe struct {
 	sensitiveWordChecker sw.SensitiveWordChecker
 }
 
-func (client *NetSafe) Init(ctx context.Context) error {
+func (client *NetSafe) Init(ctx context.Context, path string) error {
 	var err error
 	client.sensitiveWordChecker, err = sw.New(
 		buildWordsCall,
+		path,
 		sw.WithMode(sw.ModePinyin, sw.ModeStats),
 		sw.WithMaskWord('*'),
 	)
@@ -32,13 +32,7 @@ func (client *NetSafe) CheckSensitiveWords(ctx context.Context, text string) (bo
 	return client.sensitiveWordChecker.Hit(ctx, text)
 }
 
-func buildWordsCall(ctx context.Context) (words []string, err error) {
-	dir, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-	path := fmt.Sprintf("%s/sensitive_words.txt", dir)
-	log.Printf("cwd(%v).path(%v)\n", dir, path)
+func buildWordsCall(ctx context.Context, path string) (words []string, err error) {
 	lines, err := readLines(path)
 	if err != nil {
 		return nil, err
